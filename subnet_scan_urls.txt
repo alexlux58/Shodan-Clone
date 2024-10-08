@@ -1,7 +1,8 @@
 ec2-reachability.amazonaws.com
 bgp.he.net
 www.whois.com
-
+gstatic.com/ipranges/cloud.json
+ip-ranges.amazonaws.com/ip-ranges.json
 
 
 

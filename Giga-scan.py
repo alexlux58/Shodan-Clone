@@ -1,5 +1,8 @@
 import os
 import subprocess
+import re
+import asyncio
+import aiohttp
 
 class SSLChecker:
     def __init__(self, mass_scan_results_file="masscanResults.txt", ips_file="ips.txt", masscan_rate=10000):
@@ -47,10 +50,19 @@ class SSLChecker:
                     pass
                 print(f'File "{file_path}" has been created')
 
+    async def extract_domains():
+        try:
+            with open(self.mass_scan_results_file, "r") as file:
+                content=file.read()
+
+            ip_pattern = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+            ip_addresses=re.findall(ip_pattern,content)
+
     def main(self):
         self.check_and_create_files(self.mass_scan_results_file, self.ips_file)
         self.start_vpn()
         self.run_massScan()
+        await self.extract_domains()
         self.stop_vpn()
 
 if __name__ == "__main__":
