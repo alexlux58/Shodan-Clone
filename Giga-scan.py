@@ -5,10 +5,12 @@ import asyncio
 import aiohttp
 
 class SSLChecker:
-    def __init__(self, mass_scan_results_file="masscanResults.txt", ips_file="ips.txt", masscan_rate=10000):
-        self.mass_scan_results_file = mass_scan_results_file
-        self.ips_file = ips_file
-        self.masscan_rate = masscan_rate
+    def __init__(self, mass_scan_results_file="masscanResults.txt", ips_file="ips.txt", masscan_rate=10000, chunkSize=2000, timeout=2):
+        self.mass_scan_results_file = mass_scan_results_file,
+        self.ips_file = ips_file,
+        self.masscan_rate = masscan_rate,
+        self.timeout=timout
+        slef.chunkSize=chunkSize
 
     def start_vpn(self):
         try:
@@ -57,6 +59,11 @@ class SSLChecker:
 
             ip_pattern = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
             ip_addresses=re.findall(ip_pattern,content)
+            
+            for i in range(0,len(ip_addresses), self.chunkSize):
+                async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=self.MAX_CONCURRENT,ssl=False)) as session:
+                
+            
 
     def main(self):
         self.check_and_create_files(self.mass_scan_results_file, self.ips_file)
